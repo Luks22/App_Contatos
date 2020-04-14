@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
-
+import Cores from '../../cores/Cores';
+import Medidas from '../../medidas/Medidas';
 
 const ContatoInput = (props) => {
 
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: "center",
-        paddingBottom: 20,
+        paddingBottom: Medidas.inputContato.lembretePadding,
 
     },
 
@@ -68,42 +69,38 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: "center",
-        paddingTop: 10
+        paddingTop: Medidas.inputContato.inputBoxPadding
     },
 
     contatoInputText: {
-        width: '150%',
-        maxWidth: 200,
-        borderBottomColor: 'black',
-        borderBottomWidth: 1,
-        borderEndWidth: 50,
-        padding: 2,
-        paddingBottom: 5,
+        width: Medidas.inputContato.inputTextWidth,
+        maxWidth: Medidas.inputContato.inputTextWidthMax,
+        borderBottomColor: Cores.primaryBlack,
+        borderBottomWidth: Medidas.inputContato.inputBorderBot,
+        borderEndWidth: Medidas.inputContato.inputBorderEnd,
+        padding: Medidas.inputContato.inputPadding,
+        paddingBottom: Medidas.inputContato.inputPadding,
     },
 
     botao: {
         position: 'absolute',
-        width: 70,
-        height: 56,
+        width: Medidas.inputContato.buttonWidth,
+        height: Medidas.inputContato.buttonHeight,
         alignItems: 'center',
         justifyContent: 'center',
-        right: -10,
-        bottom: 15,
-        backgroundColor: '#03A9F4',
-        borderRadius: 30,
-        elevation: 8
+        right: Medidas.inputContato.buttonRigth,
+        bottom: Medidas.inputContato.buttonBot,
+        backgroundColor: Cores.primaryBlue,
+        borderRadius: Medidas.inputContato.buttonBorder,
+        elevation: Medidas.inputContato.buttonElevation
     },
 
     iconeBotao: {
-        fontSize: 40,
-        color: 'white'
+        fontSize: Medidas.inputContato.buttonFontSize,
+        color: Cores.primaryWhite,
     },
 
 });
-
-
-
-
 
 
 export default ContatoInput;

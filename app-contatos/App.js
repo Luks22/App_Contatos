@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
-import ContatoItem from './components/contatoItem/ContatoItem';
-import ContatoInput from './components/contatoInput/ContatoInput';
+import ContatoItem from './src/components/contatoItem/ContatoItem';
+import ContatoInput from './src/components/contatoInput/ContatoInput';
+import Cores from './src/cores/Cores';
+import Medidas from './src/medidas/Medidas';
+
 
 export default function App() {
   const [contadorContatos, setContadorContatos] = useState(10);
@@ -43,7 +46,6 @@ export default function App() {
         <Text style={styles.titulo}>Lista de Contatos</Text>
       </View>
 
-
       <FlatList
         data={contatos}
         renderItem={
@@ -64,7 +66,7 @@ export default function App() {
 const styles = StyleSheet.create({
 
   telaPrincipalView: {
-    padding: 50
+    padding: Medidas.telaPrincipal.paddingTela,
   },
 
   contatos: {
@@ -74,9 +76,9 @@ const styles = StyleSheet.create({
   },
 
   titulo: {
-    fontSize: 30,
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
+    fontSize: Medidas.telaPrincipal.fontSizeTela,
+    borderBottomColor: Cores.primaryBlack,
+    borderBottomWidth: Medidas.telaPrincipal.bottomWidth,
   }
 
 });
