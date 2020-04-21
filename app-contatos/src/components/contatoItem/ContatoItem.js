@@ -8,7 +8,9 @@ const ContatoItem = (props) => {
 
   return (
 
-    <TouchableOpacity onLongPress={props.onDelete.bind(this, props.chave)}>
+    <TouchableOpacity onLongPress={props.onDelete.bind(this, props.chave)}
+      onPress = {props.onDetalhesContato.bind(this, props.chave)}
+    >
 
       <Cartao style={styles.itemNaLista}>
         <View style={styles.contato}>

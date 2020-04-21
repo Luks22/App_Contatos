@@ -1,84 +1,66 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
-import ContatoItem from './src/components/contatoItem/ContatoItem';
-import ContatoInput from './src/components/contatoInput/ContatoInput';
-import Cores from './src/cores/Cores';
+import { StyleSheet, View} from 'react-native';
+import TelaContatos from './src/Telas/TelaContatos';
+import TelaDetalhesContato from './src/Telas/TelaDetalhesContato';
 import Medidas from './src/medidas/Medidas';
 
 
 export default function App() {
-  const [contadorContatos, setContadorContatos] = useState(10);
+  const [contato, setContato] = useState({ key: '', nome: '', numero: '' });
   const [contatos, setContatos] = useState([]);
+  const [contador, setContador] = useState(10);
 
-  const adicionarContato = (contato) => {
-    
-    if(contato.nome === '' || contato.numero === ''){
-      alert("Insira um contato válido");
-      return;
-    }
-    
-    setContatos((contatos) => {
-      setContadorContatos(contadorContatos + 2);
-      return [...contatos, {
-        key: contadorContatos.toString(), nome:
-          contato.nome, numero: contato.numero
-      }];
-    });
+  const detalhesContato = (contatoDetalhes, listaContatos, contadorAtual) => {
+
+    let nomeDetalhe = contatoDetalhes.nome;
+    let numeroDetalhe = contatoDetalhes.numero;
+    let chave = contatoDetalhes.key;
+
+    setContato({key: chave, nome: nomeDetalhe, numero: numeroDetalhe });
+    setContatos(listaContatos);
+
+    setContador(contadorAtual);
 
   }
 
-  const removerContato = (keyASerRemovida) => {
+  const reiniciar = (contatoEditado) => {
+    
+    setContato({ key: '', nome: '', numero: '' });
 
     setContatos((contatos) => {
-      return contatos.filter((contato) => {
-        return contato.key !== keyASerRemovida;
+      contatos.map((contato) => {
+        if (contato.key === contatoEditado.key) {
+          contato.nome = contatoEditado.nome;
+          contato.numero = contatoEditado.numero;
+        }
       });
+      return contatos;
     });
 
   }
+
+
+  let conteudo = <TelaContatos onDetalhes={detalhesContato}
+    listaContatos = {contatos}
+    contador = {contador}
+  />
+
+  if (contato.nome != '' && contato.numero != '') {
+    conteudo = <TelaDetalhesContato detalhesContato={contato}
+      onVoltar={reiniciar}
+    />
+  }
+
 
   return (
-    <View style={styles.telaPrincipalView}>
-      
-      <ContatoInput onAdicionarContato = {adicionarContato}/>
-
-      <View style={styles.contatos}>
-        <Text style={styles.titulo}>Lista de Contatos</Text>
-      </View>
-
-      <FlatList
-        data={contatos}
-        renderItem={
-          contato => (
-            <ContatoItem 
-            chave = {contato.item.key}
-            nome = {contato.item.nome} 
-            numero = {contato.item.numero}
-            onDelete = {removerContato}
-            />
-          )
-        }
-      />
+    <View style={styles.tela}>
+      {conteudo}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-
-  telaPrincipalView: {
-    padding: Medidas.telaPrincipal.paddingTela,
+  tela: {
+    flex: Medidas.telaInicial.tela,
   },
-
-  contatos: {
-    alignItems: 'center',
-    justifyContent: 'center',
-
-  },
-
-  titulo: {
-    fontSize: Medidas.telaPrincipal.fontSizeTela,
-    borderBottomColor: Cores.primaryBlack,
-    borderBottomWidth: Medidas.telaPrincipal.bottomWidth,
-  }
-
 });

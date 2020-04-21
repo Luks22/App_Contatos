@@ -25,7 +25,7 @@ const ContatoInput = (props) => {
 
     return (
 
-        <View style={styles.lembreteView}>
+        <View style={styles.inputView}>
             <View style={styles.contatoInputBox}>
                 <TextInput
                     placeholder="Nome do Contato"
@@ -57,7 +57,7 @@ const ContatoInput = (props) => {
 
 const styles = StyleSheet.create({
 
-    lembreteView: {
+    inputView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: "center",

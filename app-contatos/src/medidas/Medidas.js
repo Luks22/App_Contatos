@@ -41,6 +41,28 @@ export default{
         buttonBorder: 30,
         buttonElevation: 8,
         buttonFontSize: 40  
+    },
+
+    telaPrincipal:{
+        tela: 1,
+    },
+
+    detalhes:{
+        telaFlex: 1,
+        telaPadding: 10,
+        tituloFont: 20,
+        tituloMargin: 10,
+        botoesMargin: 20,
+        botoesWidth: 300,
+        botoesMaxWidth: '80%',
+        itemListPadding: 20,
+        itemListBorder: 10,
+        itemListWidth: '80%',
+        itemListMargin: 80,
+        botaoPositionRigth: 5,
+        botaoTextFont: 20,
+        editarWidth: '80%'
+
     }
 
 
