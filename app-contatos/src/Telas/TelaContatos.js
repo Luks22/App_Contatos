@@ -63,10 +63,6 @@ const TelaContatos = (props) => {
 
   }
 
-  const cancelarAlert = () => {
-    setCancelar(true);
-  }
-
   const detalhesContato = (keyProcurada) => {
 
     let nomeDetalhe = '';
