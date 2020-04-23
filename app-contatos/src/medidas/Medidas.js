@@ -43,7 +43,7 @@ export default{
         buttonFontSize: 40  
     },
 
-    telaPrincipal:{
+    telainicial:{
         tela: 1,
     },
 
@@ -59,8 +59,9 @@ export default{
         itemListBorder: 10,
         itemListWidth: '80%',
         itemListMargin: 80,
-        botaoPositionRigth: 5,
+        botaoPositionRigth: 4,
         botaoTextFont: 20,
+        botaoWidth: 100,
         editarWidth: '80%'
 
     }

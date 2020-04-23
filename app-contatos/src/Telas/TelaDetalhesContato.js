@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Button, TextInput, Alert } from 'react-native';
 import Cores from '../cores/Cores';
 import Medidas from '../medidas/Medidas';
 import Cartao from '../components/cartaoTemplate/Cartao';
@@ -7,10 +7,7 @@ import Cartao from '../components/cartaoTemplate/Cartao';
 const TelaDetalhesContato = (props) => {
     const [usuarioConfirmou, setUsuarioConfirmou] = useState(false);
     const [contato, setContato] = useState({ key: '', nome: '', numero: '' });
-    const [contatoAtual, setContatoAtual] = useState(
-        {key: props.detalhesContato.key,
-         nome: props.detalhesContato.nome, 
-         numero: props.detalhesContato.numero})
+    const [contatoAtual, setContatoAtual] = useState(props.detalhesContato);
 
     const capturarNome = (name) => {
 
@@ -29,11 +26,21 @@ const TelaDetalhesContato = (props) => {
     };
 
     const editarContato = (contato) => {
-        setContatoAtual({key: contatoAtual.key, nome: contato.nome, numero: contato.numero});
-        setUsuarioConfirmou(false);
+        if (contato.nome == '' && contato.numero == '') {
+            setUsuarioConfirmou(false);
+        } else if (contato.numero == '') {
+            setContatoAtual({ key: contatoAtual.key, nome: contato.nome, numero: contatoAtual.numero });
+            setUsuarioConfirmou(false);
+        } else if (contato.nome == '') {
+            setContatoAtual({ key: contatoAtual.key, nome: contatoAtual.nome, numero: contato.numero });
+            setUsuarioConfirmou(false);
+        } else {
+            setContatoAtual({ key: contatoAtual.key, nome: contato.nome, numero: contato.numero });
+            setUsuarioConfirmou(false);
+        }
     }
 
-    
+
     const confirmarEdicao = () => {
         setUsuarioConfirmou(true);
     }
@@ -42,7 +49,7 @@ const TelaDetalhesContato = (props) => {
 
     if (usuarioConfirmou) {
         editFields =
-            <Cartao style = {styles.campoEditar}>
+            <Cartao style={styles.campoEditar}>
                 <View style={styles.contatoInputBox}>
                     <TextInput
                         placeholder="Nome do Contato"
@@ -65,7 +72,7 @@ const TelaDetalhesContato = (props) => {
                         setContato({ nome: '', numero: '' });
                     }}
                     style={styles.botao}>
-                    <Text style={styles.iconeBotao}>editar</Text>
+                    <Text style={styles.iconeBotao}>confirmar</Text>
                 </TouchableOpacity>
             </Cartao>
     }
@@ -85,7 +92,7 @@ const TelaDetalhesContato = (props) => {
             <View style={styles.botoes}>
                 <Button
                     title="voltar"
-                    onPress={() => {props.onVoltar(contatoAtual)}}
+                    onPress={() => { props.onVoltar(contatoAtual) }}
                 />
 
                 <Button
@@ -170,7 +177,7 @@ const styles = StyleSheet.create({
 
     botao: {
         position: 'absolute',
-        width: Medidas.inputContato.buttonWidth,
+        width: Medidas.detalhes.botaoWidth,
         height: Medidas.inputContato.buttonHeight,
         alignItems: 'center',
         justifyContent: 'center',

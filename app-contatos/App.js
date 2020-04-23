@@ -61,6 +61,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   tela: {
-    flex: Medidas.telaInicial.tela,
+    flex: Medidas.telainicial.tela,
   },
 });

@@ -36,14 +36,15 @@ const TelaContatos = (props) => {
         'Tem certeza que deseja deletar este contato?',
         [
           {
-            text: 'sim',
+            text: 'Voltar',
             style: 'default',
-            onPress: () => {removerContato(key)}
+
           },
 
           {
-            text: 'voltar',
+            text: 'Sim',
             style: 'default',
+            onPress: () => {removerContato(key)}
           }
         ]
       );
@@ -61,10 +62,6 @@ const TelaContatos = (props) => {
       });
     });
 
-  }
-
-  const cancelarAlert = () => {
-    setCancelar(true);
   }
 
   const detalhesContato = (keyProcurada) => {
