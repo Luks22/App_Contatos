@@ -7,7 +7,7 @@ import Cartao from '../components/cartaoTemplate/Cartao';
 const TelaDetalhesContato = (props) => {
     const [usuarioConfirmou, setUsuarioConfirmou] = useState(false);
     const [contato, setContato] = useState({ key: '', nome: '', numero: '' });
-    const [contatoAtual, setContatoAtual] = useState(props.detalhesContato);
+    const [contatoAtual, setContatoAtual] = useState(props.navigation.getParam("contato"));
 
     const capturarNome = (name) => {
 
@@ -43,6 +43,22 @@ const TelaDetalhesContato = (props) => {
 
     const confirmarEdicao = () => {
         setUsuarioConfirmou(true);
+    }
+
+    const editar = (contato) => {
+        
+        let lista = props.navigation.getParam("lista");
+
+        lista.map(l => {
+            if (l.key === contato.key) {
+                l.nome = contato.nome;
+                l.numero = contato.numero;
+                l.key = contato.key;
+            }
+        });
+
+        setContatoAtual({});
+        props.navigation.goBack();
     }
 
     let editFields;
@@ -92,7 +108,7 @@ const TelaDetalhesContato = (props) => {
             <View style={styles.botoes}>
                 <Button
                     title="voltar"
-                    onPress={() => { props.onVoltar(contatoAtual) }}
+                    onPress={() => {editar(contatoAtual)}}
                 />
 
                 <Button

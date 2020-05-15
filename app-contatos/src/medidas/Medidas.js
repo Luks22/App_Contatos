@@ -1,31 +1,31 @@
-export default{
-   
-    telaPrincipal: { 
-    paddingTela: 50,
-    fontSizeTela: 20,
-    bottomWidth: 1
-   },
+export default {
 
-   cartao:{
-       cartaoShadowWidth: 0,
-       cartaoShadowHeigth: 2,
-       cartaoShadowRadius:6,
-       cartaoShadowOpacity: 0.32,
-       cartaoElevation: 8,
-       cartaoPadding: 12,
-       cartaoBorderRadius: 25, 
+    telaPrincipal: {
+        paddingTela: 50,
+        fontSizeTela: 20,
+        bottomWidth: 1
     },
 
-    Listcontato:{
+    cartao: {
+        cartaoShadowWidth: 0,
+        cartaoShadowHeigth: 2,
+        cartaoShadowRadius: 6,
+        cartaoShadowOpacity: 0.32,
+        cartaoElevation: 8,
+        cartaoPadding: 12,
+        cartaoBorderRadius: 25,
+    },
+
+    Listcontato: {
         itemPadding: 5,
         itemBorder: 1,
         itemBorderRadius: 15,
         itemMargin: 8,
         contatoPaddingBot: 10,
-        contatoFontSize: 18, 
+        contatoFontSize: 18,
     },
-    
-    inputContato:{
+
+    inputContato: {
         lembretePadding: 20,
         inputBoxPadding: 10,
         inputTextWidth: '100%',
@@ -34,20 +34,24 @@ export default{
         inputBorderEnd: 50,
         inputPadding: 2,
         inputPaddingBot: 5,
-        buttonWidth: 70,
-        buttonHeight: 56,
-        buttonRigth: -10,
+        buttonWidth: "50%",
+        buttonHeight: 50,
+        buttonLeft: 72,
         buttonBot: 15,
         buttonBorder: 30,
         buttonElevation: 8,
-        buttonFontSize: 40  
+        buttonFontSize: 18,
+        textInputBox: 30,
+        textInputBottonW: 2,
+        textInputMarginB: 15,
+        textInputPaddingV: 4
     },
 
-    telainicial:{
+    telainicial: {
         tela: 1,
     },
 
-    detalhes:{
+    detalhes: {
         telaFlex: 1,
         telaPadding: 10,
         tituloFont: 20,

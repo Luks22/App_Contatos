@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Platform, FlatList } from 'react-native';
+import { View, StyleSheet, Text, Platform, FlatList, Alert } from 'react-native';
 import ContatoItem from '../components/contatoItem/ContatoItem';
 import Cores from '../cores/Cores';
 import Medidas from '../medidas/Medidas';
@@ -11,9 +11,13 @@ const TelaContatos = (props) => {
   const [contadorContatos, setContadorContatos] = useState(0);
   const [contatos, setContatos] = useState([]);
 
-  if(props.navigation.getParam("contato") != null){
-    console.log(props.navigation.getParam("contato"));
-  }
+  useEffect(() => {
+
+    if (props.navigation.getParam("contato") != null) {
+      adicionarContato(props.navigation.getParam("contato"));
+    }
+
+  }, [])
 
   const adicionarContato = (contato) => {
 
@@ -30,7 +34,6 @@ const TelaContatos = (props) => {
       }];
     });
   }
-
 
   const removeAlert = (key) => {
 
@@ -69,19 +72,14 @@ const TelaContatos = (props) => {
 
   const detalhesContato = (keyProcurada) => {
 
-    let nomeDetalhe = '';
-    let numeroDetalhe = '';
-    let chave = '';
+    let contato = {};
 
     contatos.map(contact => {
       if (contact.key === keyProcurada) {
-        nomeDetalhe = contact.nome;
-        numeroDetalhe = contact.numero;
-        chave = contact.key;
+        contato = contact;
       }
     })
-
-    setContato({ key: chave, nome: nomeDetalhe, numero: numeroDetalhe });
+    props.navigation.navigate("DetalheDoContato", {contato: contato, lista: contatos});
   }
 
   return (

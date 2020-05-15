@@ -25,7 +25,7 @@ const TelaNovoContato = (props) => {
     };
 
     const adicionarContato = () => {
-        props.navigation.navigate("Contatos", {contato: contato});
+        props.navigation.push("Contatos", {contato: contato});
     }
 
     return (
@@ -66,28 +66,28 @@ TelaNovoContato.navigationOptions = (dadosNav) => {
 const styles = StyleSheet.create({
 
     botao: {
-        width: "50%",
-        height: 50,
+        width: Medidas.inputContato.buttonWidth,
+        height: Medidas.inputContato.buttonHeight,
         alignItems: 'center',
         justifyContent: 'center',
-        left: 72,
-        backgroundColor: 'white',
+        left: Medidas.inputContato.buttonLeft,
+        backgroundColor: Cores.primaryWhite,
         borderRadius: Medidas.inputContato.buttonBorder,
         elevation: Medidas.inputContato.buttonElevation
     },
 
     iconeBotao: {
-        fontSize: 18,
-        color: 'blue',
+        fontSize: Medidas.inputContato.buttonFontSize,
+        color: Cores.primaryBlue,
     },
     textInputBox: {
-        margin: 30
+        margin: Medidas.inputContato.textInputBox
     },
     textInput: {
-        borderBottomColor: '#DDD',
-        borderBottomWidth: 2,
-        marginBottom: 15,
-        paddingVertical: 4
+        borderBottomColor: Cores.primaryBlack,
+        borderBottomWidth: Medidas.inputContato.textInputBottonW,
+        marginBottom: Medidas.inputContato.textInputMarginB,
+        paddingVertical: Medidas.inputContato.textInputPaddingV
     }
 });
 
