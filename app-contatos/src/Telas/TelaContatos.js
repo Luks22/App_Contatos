@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, Platform, FlatList } from 'react-native';
 import ContatoItem from '../components/contatoItem/ContatoItem';
-import ContatoInput from '../components/contatoInput/ContatoInput';
 import Cores from '../cores/Cores';
 import Medidas from '../medidas/Medidas';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import BotaoCabecalho from '../components/BotaoCabecalho/BotaoCabecalho';
 
 
 const TelaContatos = (props) => {
-  const [contadorContatos, setContadorContatos] = useState(props.contador);
-  const [contatos, setContatos] = useState(props.listaContatos);
-  const [contato, setContato] = useState({ key: '', nome: '', numero: '' })
+  const [contadorContatos, setContadorContatos] = useState(0);
+  const [contatos, setContatos] = useState([]);
 
+  if(props.navigation.getParam("contato") != null){
+    console.log(props.navigation.getParam("contato"));
+  }
 
   const adicionarContato = (contato) => {
 
@@ -31,25 +34,25 @@ const TelaContatos = (props) => {
 
   const removeAlert = (key) => {
 
-      Alert.alert(
-        'Deletar Contato:',
-        'Tem certeza que deseja deletar este contato?',
-        [
-          {
-            text: 'Voltar',
-            style: 'default',
+    Alert.alert(
+      'Deletar Contato:',
+      'Tem certeza que deseja deletar este contato?',
+      [
+        {
+          text: 'Voltar',
+          style: 'default',
 
-          },
+        },
 
-          {
-            text: 'Sim',
-            style: 'default',
-            onPress: () => {removerContato(key)}
-          }
-        ]
-      );
-      return;
-    
+        {
+          text: 'Sim',
+          style: 'default',
+          onPress: () => { removerContato(key) }
+        }
+      ]
+    );
+    return;
+
 
   }
 
@@ -79,14 +82,10 @@ const TelaContatos = (props) => {
     })
 
     setContato({ key: chave, nome: nomeDetalhe, numero: numeroDetalhe });
-
-    props.onDetalhes(contato, contatos, contadorContatos);
   }
 
   return (
     <View style={styles.telaPrincipalView}>
-
-      <ContatoInput onAdicionarContato={adicionarContato} />
 
       <View style={styles.contatos}>
         <Text style={styles.titulo}>Lista de Contatos</Text>
@@ -108,6 +107,21 @@ const TelaContatos = (props) => {
       />
     </View>
   );
+}
+
+TelaContatos.navigationOptions = dadosNav => {
+  return {
+    headerTitle: "Contatos",
+    headerRight:
+      <HeaderButtons
+        HeaderButtonComponent={BotaoCabecalho}>
+        <Item
+          title="Adicionar"
+          iconName={Platform.OS === 'android' ? 'md-add' : 'ios-add'}
+          onPress={() => { dadosNav.navigation.navigate("NovoContato")}} />
+      </HeaderButtons>
+
+  }
 }
 
 const styles = StyleSheet.create({
