@@ -1,13 +1,27 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Button, TextInput, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Button, TextInput, ScrollView } from 'react-native';
 import Cores from '../cores/Cores';
 import Medidas from '../medidas/Medidas';
 import Cartao from '../components/cartaoTemplate/Cartao';
+import { useSelector, useDispatch } from 'react-redux';
+import * as contatosActions from '../store/contatosAction';
+import ImageSelect from '../components/image/imageSelect'
+
 
 const TelaDetalhesContato = (props) => {
     const [usuarioConfirmou, setUsuarioConfirmou] = useState(false);
-    const [contato, setContato] = useState({ key: '', nome: '', numero: '' });
-    const [contatoAtual, setContatoAtual] = useState(props.navigation.getParam("contato"));
+    const [contato, setContato] = useState({ id: '', nome: '', numero: '' });
+    const [imagem, setImagem] = useState(props.navigation.getParam("contatoImagem"));
+    const [imagemURI, setImagemURI] = useState();
+    const [contatoAtual, setContatoAtual] = useState({
+        id: props.navigation.getParam("idContato"),
+        nome: props.navigation.getParam("contatoNome"),
+        numero: props.navigation.getParam("contatoNumero")
+    });
+
+    const contatos = useSelector(estado => estado.contatos.contatos);
+
+    const dispatch = useDispatch();
 
     const capturarNome = (name) => {
 
@@ -27,38 +41,43 @@ const TelaDetalhesContato = (props) => {
 
     const editarContato = (contato) => {
         if (contato.nome == '' && contato.numero == '') {
+            if (imagemURI) {
+                setImagem(imagemURI);
+            }
             setUsuarioConfirmou(false);
         } else if (contato.numero == '') {
-            setContatoAtual({ key: contatoAtual.key, nome: contato.nome, numero: contatoAtual.numero });
+            setContatoAtual({ id: contatoAtual.id, nome: contato.nome, numero: contatoAtual.numero });
+            if (imagemURI) {
+                setImagem(imagemURI);
+            }
             setUsuarioConfirmou(false);
         } else if (contato.nome == '') {
-            setContatoAtual({ key: contatoAtual.key, nome: contatoAtual.nome, numero: contato.numero });
+            setContatoAtual({ id: contatoAtual.id, nome: contatoAtual.nome, numero: contato.numero });
+            if (imagemURI) {
+                setImagem(imagemURI);
+            }
             setUsuarioConfirmou(false);
-        } else {
-            setContatoAtual({ key: contatoAtual.key, nome: contato.nome, numero: contato.numero });
+        }
+        else {
+            setContatoAtual({ id: contatoAtual.id, nome: contato.nome, numero: contato.numero });
+            if (imagemURI) {
+                setImagem(imagemURI);
+            }
             setUsuarioConfirmou(false);
         }
     }
-
 
     const confirmarEdicao = () => {
         setUsuarioConfirmou(true);
     }
 
-    const editar = (contato) => {
-        
-        let lista = props.navigation.getParam("lista");
-
-        lista.map(l => {
-            if (l.key === contato.key) {
-                l.nome = contato.nome;
-                l.numero = contato.numero;
-                l.key = contato.key;
-            }
-        });
-
-        setContatoAtual({});
+    const editar = (contatoEditado) => {
+        dispatch(contatosActions.editarContato(contatoEditado, contatos, imagem));
         props.navigation.goBack();
+    }
+
+    const fotoSelecionada = imagemURI => {
+        setImagemURI(imagemURI);
     }
 
     let editFields;
@@ -66,57 +85,66 @@ const TelaDetalhesContato = (props) => {
     if (usuarioConfirmou) {
         editFields =
             <Cartao style={styles.campoEditar}>
-                <View style={styles.contatoInputBox}>
-                    <TextInput
-                        placeholder="Nome do Contato"
-                        style={styles.contatoInputText}
-                        onChangeText={capturarNome}
-                        value={contato.nome}
-                    />
+                <ScrollView>
+                    <View style={styles.contatoInputBox}>
+                        <TextInput
+                            placeholder="Nome do Contato"
+                            style={styles.contatoInputText}
+                            onChangeText={capturarNome}
+                            value={contato.nome}
+                        />
 
-                    <TextInput
-                        placeholder="Número do contato"
-                        style={styles.contatoInputText}
-                        onChangeText={capturarNumero}
-                        value={contato.numero}
-                    />
-
-                </View>
-                <TouchableOpacity
-                    onPress={() => {
-                        editarContato(contato);
-                        setContato({ nome: '', numero: '' });
-                    }}
-                    style={styles.botao}>
-                    <Text style={styles.iconeBotao}>confirmar</Text>
-                </TouchableOpacity>
+                        <TextInput
+                            placeholder="Número do contato"
+                            style={styles.contatoInputText}
+                            onChangeText={capturarNumero}
+                            value={contato.numero}
+                        />
+                        <View style={styles.imageLayout}>
+                            <ImageSelect onFotoSelecionada={fotoSelecionada} />
+                        </View>
+                    </View>
+                    <View style = {styles.botaoLayout}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                editarContato(contato);
+                                setContato({ nome: '', numero: '' });
+                            }}
+                            style={styles.botao}>
+                            <Text style={styles.iconeBotao}>confirmar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
             </Cartao>
     }
 
 
     return (
-        <View style={styles.telaPrincipalView}>
-            <Cartao style={styles.itemDaLista}>
-                <View style={styles.contato}>
-                    <Text style={styles.contatoNome}>{contatoAtual.nome}</Text>
-                </View>
-                <View style={styles.contato}>
-                    <Text style={styles.contatoNumero}>{contatoAtual.numero}</Text>
-                </View>
-            </Cartao>
-            {editFields}
-            <View style={styles.botoes}>
-                <Button
-                    title="voltar"
-                    onPress={() => {editar(contatoAtual)}}
-                />
+        <ScrollView>
+            <View style={styles.telaPrincipalView}>
+                <Cartao style={styles.itemDaLista}>
+                    <Image style={styles.imagem} source={{ uri: imagem }} />
+                    <View style={styles.contato}>
+                        <Text style={styles.contatoNome}>{contatoAtual.nome}</Text>
+                    </View>
+                    <View style={styles.contato}>
+                        <Text style={styles.contatoNumero}>{contatoAtual.numero}</Text>
+                    </View>
+                </Cartao>
+                {editFields}
+                <View style={styles.botoes}>
+                    <Button
+                        title="voltar"
+                        onPress={() => { editar(contatoAtual) }}
+                    />
 
-                <Button
-                    title="editar"
-                    onPress={confirmarEdicao}
-                />
+                    <Button
+                        title="editar"
+                        onPress={confirmarEdicao}
+                    />
+                </View>
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
@@ -215,6 +243,37 @@ const styles = StyleSheet.create({
         width: Medidas.detalhes.editarWidth
 
     },
+
+    imagem: {
+        width: Medidas.imagem.imagemWidth,
+        height: Medidas.imagem.imagemHeight,
+        borderRadius: Medidas.imagem.imageBorderRadius,
+        backgroundColor: Cores.imgBackground,
+        borderColor: Cores.primaryBlack,
+        borderWidth: Medidas.imagem.imageBorderWidth,
+    },
+
+    imageLayout: {
+        width: Medidas.detalhes.imagemLayoutWidth,
+        height: Medidas.detalhes.imagemLayoutHeight,
+        flexDirection: "row",
+        alignContent: "center",
+        justifyContent: "center",
+        paddingBottom: Medidas.detalhes.imagemLayoutPadBot,
+        paddingTop: Medidas.detalhes.imagemLayoutPadTop
+
+    },
+
+    botaoLayout: {
+        paddingTop: Medidas.detalhes.botaoLayoutPad,
+    }
+
 })
+
+TelaDetalhesContato.navigationOptions = (dadosNav) => {
+    return {
+        headerTitle: dadosNav.navigation.getParam('contatoNome')
+    }
+};
 
 export default TelaDetalhesContato;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import Cartao from '../cartaoTemplate/Cartao';
 import Cores from '../../cores/Cores';
 import Medidas from '../../medidas/Medidas';
@@ -8,16 +8,16 @@ const ContatoItem = (props) => {
 
   return (
 
-    <TouchableOpacity onLongPress={props.onDelete.bind(this, props.chave)}
-      onPress = {props.onDetalhesContato.bind(this, props.chave)}
+    <TouchableOpacity onLongPress={props.onDelete}
+      onPress={props.onSelect}
     >
-
       <Cartao style={styles.itemNaLista}>
+        <Image style={styles.imagem} source={{ uri: props.imagem }} />
         <View style={styles.contato}>
-          <Text style={styles.contatoNome}>{props.nome}</Text>
+          <Text style={styles.contatoNome}>{props.nomeContato}</Text>
         </View>
         <View style={styles.contato}>
-          <Text style={styles.contatoNumero}>{props.numero}</Text>
+          <Text style={styles.contatoNumero}>{props.numeroContato}</Text>
         </View>
       </Cartao>
 
@@ -38,7 +38,16 @@ const styles = StyleSheet.create({
     borderColor: Cores.primaryBlue,
     marginBottom: Medidas.Listcontato.itemMargin,
     marginTop: Medidas.Listcontato.itemMargin,
-    backgroundColor: Cores.primaryWhite
+    backgroundColor: Cores.primaryWhite,
+  },
+
+  imagem: {
+    width: Medidas.imagem.imagemWidth,
+    height: Medidas.imagem.imagemHeight,
+    borderRadius: Medidas.imagem.imageBorderRadius,
+    backgroundColor: Cores.imgBackground,
+    borderColor: Cores.primaryBlack,
+    borderWidth: Medidas.imagem.imageBorderWidth,
   },
 
   contato: {

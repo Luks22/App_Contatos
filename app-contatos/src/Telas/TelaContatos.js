@@ -5,37 +5,18 @@ import Cores from '../cores/Cores';
 import Medidas from '../medidas/Medidas';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import BotaoCabecalho from '../components/BotaoCabecalho/BotaoCabecalho';
+import { useSelector, useDispatch } from 'react-redux';
+import * as contatosActions from '../store/contatosAction';
 
 
 const TelaContatos = (props) => {
-  const [contadorContatos, setContadorContatos] = useState(0);
-  const [contatos, setContatos] = useState([]);
 
-  useEffect(() => {
+  let contatos = useSelector(estado => estado.contatos.contatos);
 
-    if (props.navigation.getParam("contato") != null) {
-      adicionarContato(props.navigation.getParam("contato"));
-    }
+  const dispatch = useDispatch();
 
-  }, [])
 
-  const adicionarContato = (contato) => {
-
-    if (contato.nome === '' || contato.numero === '') {
-      alert("Insira um contato válido");
-      return;
-    }
-
-    setContatos((contatos) => {
-      setContadorContatos(contadorContatos + 2);
-      return [...contatos, {
-        key: contadorContatos.toString(), nome:
-          contato.nome, numero: contato.numero
-      }];
-    });
-  }
-
-  const removeAlert = (key) => {
+  const removeAlert = (id) => {
 
     Alert.alert(
       'Deletar Contato:',
@@ -50,7 +31,7 @@ const TelaContatos = (props) => {
         {
           text: 'Sim',
           style: 'default',
-          onPress: () => { removerContato(key) }
+          onPress: () => { removerContato(id) }
         }
       ]
     );
@@ -59,28 +40,12 @@ const TelaContatos = (props) => {
 
   }
 
+  const removerContato = (idASerRemovida) => {
 
-  const removerContato = (keyASerRemovida) => {
-
-    setContatos((contatos) => {
-      return contatos.filter((contato) => {
-        return contato.key !== keyASerRemovida;
-      });
-    });
-
+    dispatch(contatosActions.deletarContato(idASerRemovida, contatos));
+    props.navigation.goBack();
   }
 
-  const detalhesContato = (keyProcurada) => {
-
-    let contato = {};
-
-    contatos.map(contact => {
-      if (contact.key === keyProcurada) {
-        contato = contact;
-      }
-    })
-    props.navigation.navigate("DetalheDoContato", {contato: contato, lista: contatos});
-  }
 
   return (
     <View style={styles.telaPrincipalView}>
@@ -91,16 +56,19 @@ const TelaContatos = (props) => {
 
       <FlatList
         data={contatos}
-        renderItem={
-          contato => (
-            <ContatoItem
-              chave={contato.item.key}
-              nome={contato.item.nome}
-              numero={contato.item.numero}
-              onDelete={removeAlert}
-              onDetalhesContato={detalhesContato}
-            />
-          )
+        keyExtractor={contato => contato.id}
+        renderItem={contato =>
+          <ContatoItem
+            nomeContato={contato.item.nome}
+            numeroContato={contato.item.numero}
+            onSelect={() =>
+              props.navigation.navigate('DetalheDoContato', {
+                contatoNome:
+                  contato.item.nome, idContato: contato.item.id, contatoNumero: contato.item.numero, contatoImagem: contato.item.imagem
+              })}
+            onDelete={() => { removeAlert(contato.item.id) }}
+            imagem={contato.item.imagem}
+          />
         }
       />
     </View>
@@ -116,7 +84,7 @@ TelaContatos.navigationOptions = dadosNav => {
         <Item
           title="Adicionar"
           iconName={Platform.OS === 'android' ? 'md-add' : 'ios-add'}
-          onPress={() => { dadosNav.navigation.navigate("NovoContato")}} />
+          onPress={() => { dadosNav.navigation.navigate("NovoContato") }} />
       </HeaderButtons>
 
   }

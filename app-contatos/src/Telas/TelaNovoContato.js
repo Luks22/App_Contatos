@@ -3,10 +3,17 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Platform, Button }
 import Cores from '../cores/Cores';
 import Medidas from '../medidas/Medidas';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useDispatch } from 'react-redux';
+import * as contatosActions from '../store/contatosAction';
+import ImageSelect from '../components/image/imageSelect';
+
 
 const TelaNovoContato = (props) => {
 
-    const [contato, setContato] = useState({ nome: '', numero: '' });
+    const dispatch = useDispatch();
+
+    const [contato, setContato] = useState({ nome: '', numero: '' }); 
+    const [imagemURI, setImagemURI] = useState();
 
     const capturarNome = (name) => {
 
@@ -24,25 +31,36 @@ const TelaNovoContato = (props) => {
         setContato({ nome: nomeContato, numero: numeroContato });
     };
 
+    const fotoSelecionada = imagemURI => {
+        setImagemURI(imagemURI);
+    }
+
     const adicionarContato = () => {
-        props.navigation.push("Contatos", {contato: contato});
+        if (contato.nome === '' || contato.numero === '') {
+            alert("Insira um contato válido");
+            return;
+        }
+
+        dispatch(contatosActions.addContatos(contato.nome, contato.numero, imagemURI));
+        props.navigation.goBack();
     }
 
     return (
         <ScrollView>
             <View style={styles.textInputBox}>
-                <TextInput style={styles.textInput} 
-                placeholder = "Nome do Contato"
-                placeholderTextColor = "#00008B"
-                value = {contato.nome}
-                onChangeText = {capturarNome}
+                <TextInput style={styles.textInput}
+                    placeholder="Nome do Contato"
+                    placeholderTextColor="#00008B"
+                    value={contato.nome}
+                    onChangeText={capturarNome}
                 />
-                <TextInput style={styles.textInput} 
-                placeholder = "Número do Contato"
-                placeholderTextColor = "#00008B"
-                value = {contato.numero}
-                onChangeText = {capturarNumero}
+                <TextInput style={styles.textInput}
+                    placeholder="Número do Contato"
+                    placeholderTextColor="#00008B"
+                    value={contato.numero}
+                    onChangeText={capturarNumero}
                 />
+                <ImageSelect onFotoSelecionada={fotoSelecionada} />
                 <TouchableOpacity
                     onPress={() => {
                         adicionarContato(contato);
@@ -88,7 +106,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: Medidas.inputContato.textInputBottonW,
         marginBottom: Medidas.inputContato.textInputMarginB,
         paddingVertical: Medidas.inputContato.textInputPaddingV
-    }
+    },
 });
 
 

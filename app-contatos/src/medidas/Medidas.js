@@ -66,8 +66,25 @@ export default {
         botaoPositionRigth: 4,
         botaoTextFont: 20,
         botaoWidth: 100,
-        editarWidth: '80%'
+        editarWidth: '80%',
+        imagemLayoutWidth: "100%",
+        imagemLayoutHeight: "80%",
+        imagemLayoutPadBot: 10,
+        imagemLayoutPadTop: 10,
+        botaoLayoutPad: 30,
 
+    },
+
+    imagem: {
+        imagemWidth: 70,
+        imagemHeight: 70,
+        imageBorderRadius: 25,
+        imageBorderWidth: 1,
+        imagemWidthPerCent: "100%",
+        imagemHeightPerCent: "100%",
+        imagemHeightComponet: 200,
+        imagemMarginComponet: 10,
+        principalComponent: 15,
     }
 
 
