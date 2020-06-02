@@ -1,4 +1,4 @@
-import { ADD_CONTATO, EDITAR_CONTATO, DELETAR_CONTATO } from "./contatosAction";
+import { ADD_CONTATO, LISTA_CONTATOS } from "./contatosAction";
 import Contato from '../model/Contato';
 
 const estadoInicial = {
@@ -8,24 +8,14 @@ const estadoInicial = {
 export default (estado = estadoInicial, action) => {
     switch (action.type) {
         case ADD_CONTATO:
-            const c = new Contato(new Date().toString(), action.dadosContato.nome, action.dadosContato.numero, action.dadosContato.imagem);
+            const c = new Contato(action.dadosContato.id.toString(), action.dadosContato.nome, action.dadosContato.numero, action.dadosContato.imagem);
             return {
                 contatos: estado.contatos.concat(c)
             };
-        case EDITAR_CONTATO:
-
-            estado.contatos = [];
-
-            const l = action.listaEditada.lista;
-        
+        case LISTA_CONTATOS:
             return {
-                contatos: estado.contatos.concat(l)
-            };
-
-        case DELETAR_CONTATO:
-            return {
-                contatos: action.listaEditada.lista
-            };
+                contatos: action.contatos.map(c => new Contato(c.id.toString(), c.nome, c.numero, c.imagem))
+            }
         default:
             return estado;
     }

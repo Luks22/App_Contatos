@@ -19,8 +19,6 @@ const TelaDetalhesContato = (props) => {
         numero: props.navigation.getParam("contatoNumero")
     });
 
-    const contatos = useSelector(estado => estado.contatos.contatos);
-
     const dispatch = useDispatch();
 
     const capturarNome = (name) => {
@@ -72,7 +70,7 @@ const TelaDetalhesContato = (props) => {
     }
 
     const editar = (contatoEditado) => {
-        dispatch(contatosActions.editarContato(contatoEditado, contatos, imagem));
+        dispatch(contatosActions.editarContato(contatoEditado, imagem));
         props.navigation.goBack();
     }
 

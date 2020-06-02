@@ -15,6 +15,10 @@ const TelaContatos = (props) => {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(contatosActions.listaDeContatos());
+  }, [dispatch]);
+
 
   const removeAlert = (id) => {
 
@@ -42,7 +46,7 @@ const TelaContatos = (props) => {
 
   const removerContato = (idASerRemovida) => {
 
-    dispatch(contatosActions.deletarContato(idASerRemovida, contatos));
+    dispatch(contatosActions.removerContato(idASerRemovida));
     props.navigation.goBack();
   }
 
