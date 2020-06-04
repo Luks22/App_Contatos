@@ -5,9 +5,9 @@ export const ADD_CONTATO = 'ADD_CONTATO';
 export const LISTA_CONTATOS = 'LISTA_CONTATOS';
 
 
-export const addContatos = (nomeContato, numeroContato, imagemURI) => {
+export const addContatos = (nomeContato, numeroContato, imagemURI, latitudeContato, longitudeContato, horarioContato) => {
     return async dispatch => {
-
+    
         const nomeArquivo = imagemURI.split("/").pop();
         const novoPath = FileSystem.documentDirectory + nomeArquivo;
         try {
@@ -19,12 +19,20 @@ export const addContatos = (nomeContato, numeroContato, imagemURI) => {
             const resultadoDB = await inserirContato(
                 nomeContato,
                 numeroContato,
-                novoPath
+                novoPath,
+                latitudeContato,
+                longitudeContato,
+                horarioContato
             );
 
             dispatch({
                 type: ADD_CONTATO, dadosContato:
-                    { id: resultadoDB.insertId, nome: nomeContato, numero: numeroContato, imagem: novoPath }
+                    { id: resultadoDB.insertId, nome: nomeContato, numero: numeroContato, 
+                        imagem: novoPath, 
+                        latitude: latitudeContato, 
+                        longitude: longitudeContato, 
+                        horario: horarioContato
+                    }
             });
         }
         catch (err) {

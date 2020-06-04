@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Platform, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import Cores from '../cores/Cores';
 import Medidas from '../medidas/Medidas';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 import * as contatosActions from '../store/contatosAction';
 import ImageSelect from '../components/image/imageSelect';
+import * as Location from 'expo-location'
+import * as Permissions from 'expo-permissions'
 
 
 const TelaNovoContato = (props) => {
 
     const dispatch = useDispatch();
 
-    const [contato, setContato] = useState({ nome: '', numero: '' }); 
+    const [contato, setContato] = useState({ nome: '', numero: '' });
     const [imagemURI, setImagemURI] = useState();
 
     const capturarNome = (name) => {
@@ -35,14 +37,52 @@ const TelaNovoContato = (props) => {
         setImagemURI(imagemURI);
     }
 
-    const adicionarContato = () => {
-        if (contato.nome === '' || contato.numero === '') {
-            alert("Insira um contato válido");
-            return;
+    const verificarPermissoes = async () => {
+        const resultado = await Permissions.askAsync(Permissions.LOCATION);
+        if (resultado.status !== "granted") {
+            Alert.alert(
+                'Sem permissão para uso do mecanismo de localização',
+                "É preciso liberar acesso ao mecanismo de localização",
+                [{ text: "Ok" }]
+            )
+            return false;
         }
+        return true;
+    }
 
-        dispatch(contatosActions.addContatos(contato.nome, contato.numero, imagemURI));
-        props.navigation.goBack();
+    const adicionarContato = async () => {
+        const temPermissao = await verificarPermissoes();
+        if (temPermissao) {
+            try {
+                const localizacao = await Location.getCurrentPositionAsync({
+                    timeout:
+                        8000
+                });
+                
+                let lat = localizacao.coords.latitude;
+                let lon = localizacao.coords.longitude;
+
+                let data = new Date();
+                let horario = data.getHours() + ":" + data.getMinutes();
+
+
+                if (contato.nome === '' || contato.numero === '') {
+                    alert("Insira um contato válido");
+                    return;
+                }
+
+                dispatch(contatosActions.addContatos(contato.nome, contato.numero, imagemURI, lat, lon, horario));
+                props.navigation.goBack();
+            }
+            catch (err) {
+                Alert.alert(
+                    "Impossível obter localização",
+                    "Para cadastar um contato e necessário o uso da localização",
+                    [{ text: "Ok" }]
+                );
+                return;
+            }
+        }
     }
 
     return (

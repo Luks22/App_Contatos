@@ -5,7 +5,7 @@ const db = SQLite.openDatabase("contatos.db");
 export const init = () => {
     const promise = new Promise((resolve, reject) => {
         db.transaction((tx) => {
-            tx.executeSql("CREATE TABLE IF NOT EXISTS tb_contatos(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, numero TEXT NOT NULL, imagem TEXT NOT NULL);",
+            tx.executeSql("CREATE TABLE IF NOT EXISTS tb_contatos(id INTEGER PRIMARY KEY, nome TEXT NOT NULL, numero TEXT NOT NULL, imagem TEXT NOT NULL, latitude INTEGER NOT NULL, longitude INTEGER NOT NULL, horario TEXT NOT NULL);",
                 [],
                 () => { resolve() },
                 (_, err) => { reject(err) }
@@ -16,12 +16,12 @@ export const init = () => {
     return promise;
 }
 
-export const inserirContato = (nome, numero, imagemUri) => {
+export const inserirContato = (nome, numero, imagemUri, latitude, longitude, horario) => {
     const promise = new Promise((resolve, reject) => {
         db.transaction((tx) => {
             tx.executeSql(
-                'INSERT INTO tb_contatos (nome, numero, imagem) VALUES (?,?,?)',
-                [nome, numero, imagemUri],
+                'INSERT INTO tb_contatos (nome, numero, imagem, latitude, longitude, horario) VALUES (?,?,?,?,?,?)',
+                [nome, numero, imagemUri, latitude, longitude, horario],
                 (_, resultado) => { resolve(resultado) },
                 (_, err) => { reject(err) }
             );
