@@ -63,7 +63,14 @@ const TelaNovoContato = (props) => {
                 let lon = localizacao.coords.longitude;
 
                 let data = new Date();
-                let horario = data.getHours() + ":" + data.getMinutes();
+                let minutos = data.getMinutes();
+                if(minutos < 10){
+                    minutos = "0".concat(minutos.toString());
+                }else if(minutos % 10 == 0){
+                    minutos = minutos.toString().concat("0");
+                }
+
+                let horario = data.getHours() + ":" + minutos;
 
 
                 if (contato.nome === '' || contato.numero === '') {

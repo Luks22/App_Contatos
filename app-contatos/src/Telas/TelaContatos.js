@@ -60,7 +60,7 @@ const TelaContatos = (props) => {
 
       <FlatList
         data={contatos}
-        keyExtractor={contato => contato.id}
+        keyExtractor={contato => contato.chave}
         renderItem={contato =>
           <ContatoItem
             nomeContato={contato.item.nome}
@@ -68,9 +68,9 @@ const TelaContatos = (props) => {
             onSelect={() =>
               props.navigation.navigate('DetalheDoContato', {
                 contatoNome:
-                  contato.item.nome, idContato: contato.item.id, contatoNumero: contato.item.numero, contatoImagem: contato.item.imagem
+                  contato.item.nome, idContato: contato.item.chave, contatoNumero: contato.item.numero, contatoImagem: contato.item.imagem
               })}
-            onDelete={() => { removeAlert(contato.item.id) }}
+            onDelete={() => { removeAlert(contato.item.chave) }}
             imagem={contato.item.imagem}
           />
         }

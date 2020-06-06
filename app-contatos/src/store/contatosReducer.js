@@ -8,7 +8,7 @@ const estadoInicial = {
 export default (estado = estadoInicial, action) => {
     switch (action.type) {
         case ADD_CONTATO:
-            const c = new Contato(action.dadosContato.id.toString(), action.dadosContato.nome, 
+            const c = new Contato(action.dadosContato.chave.toString(), action.dadosContato.nome, 
             action.dadosContato.numero, 
             action.dadosContato.imagem, 
             action.dadosContato.latitude,
@@ -19,7 +19,7 @@ export default (estado = estadoInicial, action) => {
             };
         case LISTA_CONTATOS:
             return {
-                contatos: action.contatos.map(c => new Contato(c.id.toString(), c.nome, c.numero, c.imagem, c.latitude, c.longitude, c.horario))
+                contatos: action.contatos.map(c => new Contato(c.chave, c.nome, c.numero, c.imagem, c.latitude, c.longitude, c.horario))
             }
         default:
             return estado;

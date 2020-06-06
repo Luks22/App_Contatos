@@ -1,6 +1,6 @@
 class Contato {
-    constructor(id, nome, numero, imagem, latitude, longitude, horario) {
-        this.id = id;
+    constructor(chave, nome, numero, imagem, latitude, longitude, horario) {
+        this.chave = chave;
         this.nome = nome;
         this.numero = numero;
         this.imagem = imagem;
